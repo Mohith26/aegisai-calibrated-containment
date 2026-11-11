@@ -239,7 +239,7 @@ export function calibratePolicy(cal, alphaByGroup, delta) {
 // Queue entry when the running score first reaches the "Likely takeover" bar (0.5), plus the
 // audit-log delay. Analyst delay is lognormal (stored normal deviate z per finding):
 // business hours (Mon-Fri 08-18 SOC time) median 38 min; otherwise wait for 08:00 then median 25 min.
-export const LIKELY = 0.25;
+export const LIKELY = 0.1;
 export const ANALYST = { tz: -5, bizMedian: 38, offMedian: 25, sigma: 0.9, coverage: 'business' };
 export const REVOKE_API_SEC = 5;
 export function analystDelay(tMin, z, A = ANALYST) {

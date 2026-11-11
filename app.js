@@ -88,7 +88,7 @@ function signals(r) {
 function statusOf(score, label) {
   if (label === 0 && score >= K.LIKELY) return { k: 'likely', t: 'Likely takeover' };
   if (score >= K.LIKELY) return { k: 'likely', t: 'Likely takeover' };
-  if (score >= 0.1) return { k: 'watch', t: 'Watching' };
+  if (score >= 0.05) return { k: 'watch', t: 'Watching' };
   return { k: 'normal', t: 'Normal' };
 }
 
@@ -402,7 +402,7 @@ function renderContainment(q) {
       <div class="kpi"><em>Attacker steps prevented</em><b>${M.preventedTotal}<small> of ${M.stepsTotal}</small></b><span>rules, MFA methods, internal sends (review only: ${base.metrics.preventedTotal})</span></div>
       <div class="kpi"><em>Wrong revocations</em><b>${M.wrong}</b><span>${pct(M.wrong / Math.max(1, M.legit), 2)} of ${fmtInt(M.legit)} legitimate findings</span></div>
     </div>
-    <table class="cmp"><thead><tr><th>Policy</th><th>Contained automatically</th><th>Median time to containment</th><th>Steps prevented</th><th>Wrong revocations</th><th>Guarantee</th></tr></thead><tbody>
+    <table class="cmp"><thead><tr><th>Policy</th><th>Contained automatically</th><th>Median time to containment</th><th>Steps prevented</th><th>Analyst reviews</th><th>Wrong revocations</th><th>Guarantee</th></tr></thead><tbody>
       ${cmpRow('Review only (today)', base.metrics, 'none needed', false)}
       ${cmpRow('Fixed score ≥ 0.90', fixed.metrics, 'none', false)}
       ${cmpRow(`Calibrated, 1 in ${fmtInt(S.alphaInv)}, no guard`, noGuard.metrics, 'holds until behaviour shifts', false)}
@@ -430,7 +430,7 @@ function renderContainment(q) {
   wireTips();
 }
 function cmpRow(name, m, guar, me) {
-  return `<tr class="${me ? 'mine' : ''}"><td>${name}</td><td class="num">${m.autoContained} of ${m.atos}</td><td class="num">${K.fmtDuration(m.medianContainMin)}</td><td class="num">${m.preventedTotal} of ${m.stepsTotal}</td><td class="num">${m.wrong}</td><td>${guar}</td></tr>`;
+  return `<tr class="${me ? 'mine' : ''}"><td>${name}</td><td class="num">${m.autoContained} of ${m.atos}</td><td class="num">${K.fmtDuration(m.medianContainMin)}</td><td class="num">${m.preventedTotal} of ${m.stepsTotal}</td><td class="num">${m.reviewQueue}</td><td class="num">${m.wrong}</td><td>${guar}</td></tr>`;
 }
 
 // risk vs threshold, computed from the calibration findings

@@ -10,16 +10,16 @@ AegisAI's account takeover protection is review-only today; its own FAQ says *"A
 
 3,000 mailboxes, 26 weeks, 12,727 findings, 117 confirmed takeovers. Score model trained on weeks 1-10, thresholds certified on weeks 11-18, everything below replayed on weeks 19-26 (3,918 findings, 31 takeovers). Limit 1 in 200, 95% joint confidence, analysts on business hours. Every number comes from `scripts/report.mjs` → `data/results.json` and is recomputed in the browser from the same code.
 
-| Policy | Takeovers contained automatically | Median time to containment | Attacker steps prevented | Wrong revocations |
-|---|---|---|---|---|
-| Review only (today) | 0 of 31 | 2 h 12 min | 7 of 43 | 0 |
-| Fixed score ≥ 0.90 | 7 of 31 | 60 min | 8 of 43 | 0 |
-| Calibrated, no guard | 28 of 31 | 9 min | 25 of 43 | 26 |
-| **Calibrated + guard** | **26 of 31** | **10 min** | **24 of 43** | **13** (0.33% of 3,887 legitimate) |
+| Policy | Takeovers contained automatically | Median time to containment | Attacker steps prevented | Analyst reviews | Wrong revocations |
+|---|---|---|---|---|---|
+| Review only (today) | 0 of 31 | 2 h 17 min | 9 of 43 | 96 | 0 |
+| Fixed score ≥ 0.90 | 7 of 31 | 51 min | 10 of 43 | 89 | 0 |
+| Calibrated, no guard | 28 of 31 | 10 min | 25 of 43 | 42 | 26 |
+| **Calibrated + guard** | **26 of 31** | **10 min** | **24 of 43** | **57** | **13** (0.33% of 3,887 legitimate) |
 
 - The certificate holds where its assumption holds: on the seven replay weeks without the Lisbon sales kickoff, every group's wrong-revocation rate is under 1 in 200 (unit test).
 - The Lisbon kickoff (week of Oct 12) is a deliberate distribution shift: conference Wi-Fi behind a cloud proxy, phones roaming mid-session, laptops still on the home VPN. It looks like token theft. The guard paused only *Frequent travelers* on Wed Oct 14, 14:29 CT; without it the replay has 26 wrong revocations instead of 13.
-- With 24×7 analysts instead of business hours, review-only containment improves to a median 43 min; calibrated stays at 10 min.
+- With 24×7 analysts instead of business hours, review-only containment improves to a median 37 min; calibrated stays at 10 min.
 - "Attacker steps" are inbox rules, MFA method registrations and internal phishing bursts that happened after the first malicious sign-in; a step counts as prevented if containment came first.
 
 ## How it works (`src/containment.js`)
@@ -27,7 +27,7 @@ AegisAI's account takeover protection is review-only today; its own FAQ says *"A
 1. **Signals from raw events.** Each finding carries its event trail (sign-ins with city, ASN type, device and session token; MFA push denials; MFA method registrations; inbox rules; internal send bursts). `featurize()` derives 16 signals the way an analyst would: travel speed (haversine / minutes since the last normal sign-in, > 900 km/h), first-seen device, hosting provider for an account with no VPN habit, one session token from two IPs, hidden rules (moved to RSS Subscriptions / Archive and marked read), payment keywords, first rule ever, internal bursts, off-hours.
 2. **Running score.** A logistic model (stand-in for Aegis's own confidence score) is evaluated after every event, so containment can trigger at the sign-in, at the rule, or later. The trigger "running score crosses λ" is the same event as "max score ≥ λ", so certifying on each finding's maximum score certifies the trigger exactly.
 3. **Learn-then-Test.** For group *g* with limit α, test H₀(λ): FPR(λ) > α on a fixed grid λ = 1.000, 0.999, … with p(λ) = P(Bin(n, α) ≤ k(λ)), where *k* is the number of legitimate calibration findings at or above λ. Fixed-sequence testing (strictest first, stop at the first p > δ/3) controls the family-wise error at δ/3 per group, so all three certificates hold jointly with probability ≥ 1 − δ (Bonferroni). If even k = 0 cannot certify α (n < log δ / log(1 − α)), the group stays review-only and the UI says how much history it needs.
-4. **Replay.** Held-out findings are replayed in time order: audit-log delay (lognormal, median 4 min, assumption) + 5 s API call for automation; for everything else the finding enters the analyst queue when the score reaches 0.25 and an analyst acts after a lognormal delay (median 38 min in business hours, otherwise the next 08:00 CT plus a median 25 min; assumptions, switchable to 24×7).
+4. **Replay.** Held-out findings are replayed in time order: audit-log delay (lognormal, median 4 min, assumption) + 5 s API call for automation; for everything else the finding enters the analyst queue when the score reaches 0.10 (the "Likely takeover" bar in this demo) and an analyst acts after a lognormal delay (median 38 min in business hours, otherwise the next 08:00 CT plus a median 25 min; assumptions, switchable to 24×7).
 5. **Guard.** For each group, resolved legitimate findings feed a mixture likelihood-ratio e-process testing FPR ≤ α against 2α, 4α and 8α. Under the null every component is a nonnegative supermartingale, so by Ville's inequality the chance of a false pause, however often you look, is at most 5%. Crossing 20 pauses that group only.
 
 The demo is the Aegis console as AegisAI shows it on `/platform/account-takeover-protection` (Findings / Accounts / Messages / Settings, dark Aegis side panel, verdict card), with a new **Containment** page, containment state on every finding, and a containment timeline on the finding detail. Shadow mode, an approval step for going live, analyst labels that update the guard, URL deep links (`#/containment?a=500&c=99&g=exec`), localStorage persistence, CSV and JSON export, and keyboard shortcuts (`/`, `j`/`k`, `Enter`, `Esc`, `g f`, `g c`, `[ ]`, `?`).
