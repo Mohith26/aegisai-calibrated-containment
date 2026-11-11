@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automated containment · Aegis</title>
+<meta name="description" content="Concept: calibrated automated containment for AegisAI account takeover findings. Unofficial demo by Mohith Gajjela.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f1f23' stroke-width='1.8'%3E%3Cpath d='M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <a class="brand" href="#/findings" aria-label="Aegis home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/></svg>Aegis</a>
+    <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Search accounts" aria-label="Search accounts" autocomplete="off"><kbd>/</kbd></label>
+    <div class="top-r">
+      <button class="icon-btn" id="help-btn" aria-label="Keyboard shortcuts"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></svg></button>
+      <span class="me" aria-label="Signed in as Sam Kim">SK</span>
+    </div>
+  </header>
+  <div class="main" id="main">
+    <nav class="nav" aria-label="Primary">
+      <a href="#/findings" data-nav="findings"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/></svg>Findings<b class="cnt" id="nav-cnt"></b></a>
+      <a href="#/accounts" data-nav="accounts"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>Accounts</a>
+      <a href="#/messages" data-nav="messages"><svg viewBox="0 0 24 24"><path d="M4 13h4l2 3h4l2-3h4M4 13l2-8h12l2 8v6H4z"/></svg>Messages</a>
+      <a href="#/containment" data-nav="containment"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/><path d="m9 12 2 2 4-4"/></svg>Containment<i class="new">New</i></a>
+      <a href="#/settings" data-nav="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Settings</a>
+      <div class="nav-foot">
+        <span class="mode-pill" id="mode-pill"></span>
+        <p class="disclaimer">Unofficial concept demo by Mohith Gajjela. Not affiliated with AegisAI. Synthetic data (<a href="https://github.com/Mohith26/aegisai-calibrated-containment">seeded</a>).</p>
+      </div>
+    </nav>
+    <main class="view" id="view" tabindex="-1" aria-live="polite">
+      <div class="skeleton" aria-label="Loading">
+        <div class="sk sk-h"></div><div class="sk sk-s"></div>
+        <div class="sk-row"><div class="sk sk-c"></div><div class="sk sk-c"></div><div class="sk sk-c"></div><div class="sk sk-c"></div></div>
+        <div class="sk sk-t"></div><div class="sk sk-t"></div><div class="sk sk-t"></div><div class="sk sk-t"></div><div class="sk sk-t"></div>
+      </div>
+    </main>
+    <aside class="side" id="side" hidden></aside>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="modal-bg" id="modal" hidden></div>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+{
+  "settings": {
+    "alphaInv": 200,
+    "alpha": 0.005,
+    "confidence": 0.95,
+    "coverage": "business",
+    "calibrationWeeks": [
+      11,
+      18
+    ],
+    "testWeeks": [
+      19,
+      26
+    ],
+    "likelyBar": 0.25
+  },
+  "findings": 12727,
+  "takeovers": 117,
+  "model": {
+    "features": [
+      "impossible_travel",
+      "new_country",
+      "new_country_nontraveler",
+      "first_seen_device",
+      "hosting_unusual",
+      "hosting_habitual",
+      "session_two_ips",
+      "mfa_push_burst",
+      "mfa_method_added",
+      "rule_created",
+      "rule_hidden",
+      "rule_payment_terms",
+      "first_rule_ever",
+      "internal_send_burst",
+      "off_hours",
+      "mobile_network"
+    ],
+    "weights": [
+      2.3809,
+      0.232,
+      0.5188,
+      1.5522,
+      1.048,
+      0.0177,
+      0.8063,
+      1.4486,
+      0.9775,
+      0.5949,
+      1.1488,
+      0.8946,
+      0.014,
+      0.7517,
+      -0.0367,
+      -1.479
+    ],
+    "bias": -6.0781
+  },
+  "policy": {
+    "exec": {
+      "certified": true,
+      "threshold": 0.252,
+      "n": 1113,
+      "k": 0,
+      "p": 0.0038,
+      "deltaGroup": 0.0167,
+      "calTpr": 0.8667,
+      "nAto": 15
+    },
+    "travel": {
+      "certified": true,
+      "threshold": 0.129,
+      "n": 1494,
+      "k": 0,
+      "p": 0.0006,
+      "deltaGroup": 0.0167,
+      "calTpr": 0.9167,
+      "nAto": 12
+    },
+    "other": {
+      "certified": true,
+      "threshold": 0.252,
+      "n": 1277,
+      "k": 1,
+      "p": 0.0123,
+      "deltaGroup": 0.0167,
+      "calTpr": 1,
+      "nAto": 13
+    }
+  },
+  "replay": {
+    "calibratedGuard": {
+      "atos": 31,
+      "autoContained": 26,
+      "legit": 3887,
+      "wrong": 13,
+      "reviewQueue": 9,
+      "reviewQueueToday": 40,
+      "medianAutoMin": 9.1333,
+      "medianAnalystMin": 132.392,
+      "medianContainMin": 10.0083,
+      "stepsTotal": 43,
+      "prevented": 23,
+      "preventedAnalyst": 7,
+      "preventedTotal": 24,
+      "byGroup": {
+        "exec": {
+          "atos": 14,
+          "auto": 12,
+          "legit": 1046,
+          "wrong": 1
+        },
+        "travel": {
+          "atos": 5,
+          "auto": 3,
+          "legit": 1602,
+          "wrong": 12
+        },
+        "other": {
+          "atos": 12,
+          "auto": 11,
+          "legit": 1239,
+          "wrong": 0
+        }
+      }
+    },
+    "calibratedNoGuard": {
+      "atos": 31,
+      "autoContained": 28,
+      "legit": 3887,
+      "wrong": 26,
+      "reviewQueue": 1,
+      "reviewQueueToday": 40,
+      "medianAutoMin": 9.1333,
+      "medianAnalystMin": 132.392,
+      "medianContainMin": 9.1333,
+      "stepsTotal": 43,
+      "prevented": 25,
+      "preventedAnalyst": 7,
+      "preventedTotal": 25,
+      "byGroup": {
+        "exec": {
+          "atos": 14,
+          "auto": 12,
+          "legit": 1046,
+          "wrong": 1
+        },
+        "travel": {
+          "atos": 5,
+          "auto": 5,
+          "legit": 1602,
+          "wrong": 25
+        },
+        "other": {
+          "atos": 12,
+          "auto": 11,
+          "legit": 1239,
+          "wrong": 0
+        }
+      }
+    },
+    "reviewOnly": {
+      "atos": 31,
+      "autoContained": 0,
+      "legit": 3887,
+      "wrong": 0,
+      "reviewQueue": 40,
+      "reviewQueueToday": 40,
+      "medianAutoMin": null,
+      "medianAnalystMin": 132.392,
+      "medianContainMin": 132.392,
+      "stepsTotal": 43,
+      "prevented": 0,
+      "preventedAnalyst": 7,
+      "preventedTotal": 7,
+      "byGroup": {
+        "exec": {
+          "atos": 14,
+          "auto": 0,
+          "legit": 1046,
+          "wrong": 0
+        },
+        "travel": {
+          "atos": 5,
+          "auto": 0,
+          "legit": 1602,
+          "wrong": 0
+        },
+        "other": {
+          "atos": 12,
+          "auto": 0,
+          "legit": 1239,
+          "wrong": 0
+        }
+      }
+    },
+    "fixed090": {
+      "atos": 31,
+      "autoContained": 7,
+      "legit": 3887,
+      "wrong": 0,
+      "reviewQueue": 33,
+      "reviewQueueToday": 40,
+      "medianAutoMin": 17.2833,
+      "medianAnalystMin": 132.392,
+      "medianContainMin": 59.5412,
+      "stepsTotal": 43,
+      "prevented": 3,
+      "preventedAnalyst": 7,
+      "preventedTotal": 8,
+      "byGroup": {
+        "exec": {
+          "atos": 14,
+          "auto": 4,
+          "legit": 1046,
+          "wrong": 0
+        },
+        "travel": {
+          "atos": 5,
+          "auto": 0,
+          "legit": 1602,
+          "wrong": 0
+        },
+        "other": {
+          "atos": 12,
+          "auto": 3,
+          "legit": 1239,
+          "wrong": 0
+        }
+      }
+    },
+    "paused": {
+      "exec": null,
+      "travel": 225809,
+      "other": null
+    }
+  }
+}
